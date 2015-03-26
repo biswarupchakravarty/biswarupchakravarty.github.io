@@ -1,0 +1,16 @@
+---
+highlighter: pygments
+permalink: /:title
+defaults:
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      author:
+        name: "Biswarup Chakravarty"
+        email: biswarup.chakravarty@gmail.com
+      tags:
+      -
+---

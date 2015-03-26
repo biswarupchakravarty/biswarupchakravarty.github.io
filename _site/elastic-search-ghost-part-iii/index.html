@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A layout example that shows off a blog page with a list of posts.">
+
+    <title>ElasticSearch + Ghost: Part III</title>
+
+    <!-- <link rel="stylesheet" type="text/css" href="/assets/stylesheets/common/pure.css">
+    <link rel="stylesheet" type="text/css" href="/assets/stylesheets/common/grids-responsive.css">
+    <link rel="stylesheet" type="text/css" href="/assets/stylesheets/common/typography.css">
+    <link rel="stylesheet" type="text/css" href="/assets/stylesheets/common/syntax.css">
+    <link rel="stylesheet" type="text/css" href="/assets/stylesheets/common/blog.css">
+    <link rel="stylesheet" type="text/css" href="/assets/stylesheets/common/styles.css"> -->
+
+    <link rel="stylesheet" type="text/css" href="/assets/stylesheets/common/common_all.css">    
+  </head>
+
+  <body>
+    <div id="layout" class="pure-g">
+      <div class="sidebar pure-u-1 pure-u-md-1-4">
+        <div class="header">
+          <h1 class="brand-title">The Shiny Coin</h1>
+          <h2 class="brand-tagline">A blog about the modern web.</h2>
+
+          <nav class="nav">
+            <ul class="nav-list">
+              <li class="nav-item">
+                
+                  <a class="pure-button" href="/">&larr; Back Home</a>
+                
+              </li>
+              <!-- <li class="nav-item">
+                <a class="pure-button" href="http://yuilibrary.com">YUI Library</a>
+              </li> -->
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+      <div class="content  pure-u-1 pure-u-md-3-4">
+        <article class="post">
+  <header class="post-header">
+    <!-- <img class="post-avatar" alt="Biswarup Chakravarty&#x27;s avatar" height="48" width="48" data-email="biswarup.chakravarty@gmail.com"> -->
+    <h1 class="post-title"><a href="/elastic-search-ghost-part-iii" class="post-title-link">ElasticSearch + Ghost: Part III</a></h1>
+    <p class="post-meta">
+      By <a href="" class="post-author">Biswarup Chakravarty</a> on <time datetime="">14 March 2015</time>
+      under 
+        <a class="post-tag post-tag-index-1" href="#">Elastic Search</a>
+      
+        <a class="post-tag post-tag-index-2" href="#">Ghost Blog</a>
+      
+        <a class="post-tag post-tag-index-3" href="#">JavaScript</a>
+      
+   </p>
+   <div class="social-buttons-container">
+  <ul class="social-buttons cf">
+    <li>
+      <a href="http://twitter.com/share" class="socialite twitter-share" data-text="Socialite.js" data-url="/elastic-search-ghost-part-iii" rel="nofollow" target="_blank"><span class="vhidden"><!-- Share on Twitter --></span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=/elastic-search-ghost-part-iii" class="socialite googleplus-one" data-href="/elastic-search-ghost-part-iii" rel="nofollow" target="_blank"><span class="vhidden"><!-- Share on Google --></span></a>
+    </li>
+    <li>
+      <a href="http://www.facebook.com/sharer.php?u=http://www.socialitejs.com&amp;t=Socialite.js" class="socialite facebook-like" data-href="/elastic-search-ghost-part-iii" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" rel="nofollow" target="_blank"><span class="vhidden"><!-- Share on Facebook --></span></a>
+    </li>
+    <li></li>
+    <!-- <li>
+    <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=/elastic-search-ghost-part-iii&amp;title=Socialite.js" class="socialite linkedin-share" data-url="/elastic-search-ghost-part-iii" data-counter="top" rel="nofollow" target="_blank"><span class="vhidden">Share on LinkedIn</span></a>
+    </li>
+    <li>
+    <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=/elastic-search-ghost-part-iii&amp;title=Socialite.js" class="socialite linkedin-share" data-url="/elastic-search-ghost-part-iii" data-counter="top" rel="nofollow" target="_blank"><span class="vhidden">Share on LinkedIn</span></a>
+    </li> -->
+  </ul>
+</div>
+   <hr>
+ </header>
+ <section class="post-description">
+  <p>This is the third part of the series explaining how to integrate Elastic Search with your self hosted Ghost blog. Make sure to have read parts <a href="/elastic-search-ghost-part-i/">one</a> and <a href="/elastic-search-ghost-part-ii/">two</a> first!</p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Up until the previous part, we’ve covered the basics of Elastic Search and we’ve modified the Ghost server to create an API that will return all of our posts in the JSON format. We’ve also created a script that will call this API and index all of the posts into Elastic Search.</p>
+
+<p>In this part, we are going to create the API on the server that will execute the actual search. This API will receive the search query, proxy it through to Elastic Search and then send out the results.</p>
+
+<p>To be able to see the results, we’ll add a simple page to Ghost that will just display the output of the query.</p>
+
+<h2 id="creating-the-search-api">Creating the Search API</h2>
+
+<p>Let’s break it down:</p>
+
+<ol>
+  <li>Create the Elastic Search query and test it out.</li>
+  <li>Create the route for our API.</li>
+  <li>Fill in the handler for out newly created route.</li>
+  <li>Create the search results page.</li>
+  <li>Test it all out.</li>
+</ol>
+
+<h3 id="creating-the-elastic-search-query">Creating the Elastic Search Query</h3>
+
+<p>Elastic Search has an amazing <a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl.html">Query DSL</a>. For now, we’ll be using a <a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-wildcard-query.html">wildcard</a> <a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-queries.html">query</a> along with <a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-request-highlighting.html">highlighting</a> and <a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-suggesters.html#search-suggesters">suggestions</a> and will be returning specific <a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-request-fields.html#search-request-fields">fields</a>. I strongly recommend you go through the docs and try out the queries against your local installation of Elastic Search. I use the Chrome extension <a href="https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm">Postman</a> for testing.</p>
+
+<p>Let’s jump right in!</p>
+
+<p>This is what the query looks like:</p>
+
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span>
+  <span class="nt">&quot;fields&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;slug&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;tags&quot;</span><span class="p">,</span> <span class="s2">&quot;updated_at&quot;</span><span class="p">],</span>
+  <span class="nt">&quot;query&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;wildcard&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;_all&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;wildcard&quot;</span><span class="p">:</span> <span class="s2">&quot;query_text*&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;highlight&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;fields&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="p">{},</span>
+      <span class="nt">&quot;tags&quot;</span><span class="p">:</span> <span class="p">{},</span>
+      <span class="nt">&quot;content&quot;</span><span class="p">:</span> <span class="p">{}</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;suggest&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;suggestions&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;query_text&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;term&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;field&quot;</span><span class="p">:</span> <span class="s2">&quot;_all&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;suggest_mode&quot;</span><span class="p">:</span> <span class="s2">&quot;always&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p><strong>Note:</strong> Replace <code>query_text</code> with your query.</p>
+
+<p>Go ahead, test it out via your REST client of choice! Here’s a screenshot of a search for ‘blog’:</p>
+
+<p><img src="/assets/images/es_query_blog_o.jpg" alt="Our First Query" /></p>
+
+<p>And this is the suggestor in action! I searched with the text ‘blogg’</p>
+
+<p><img src="/assets/images/es_query_blogg_o.jpg" alt="Suggestions" /></p>
+
+<p>All done! Let’s move on!</p>
+
+<h3 id="creating-the-route">Creating the Route</h3>
+
+<p>We’ve already created routes before, so this should be familiar. Open up <code>core/server/routes/frontend.js</code> and add the following line to it:</p>
+
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">server</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/search/&#39;</span><span class="p">,</span> <span class="nx">frontend</span><span class="p">.</span><span class="nx">search_results</span><span class="p">);</span></code></pre></div>
+
+<h3 id="creating-the-handler">Creating the handler</h3>
+
+<p>Open up the file <code>core/server/controllers/frontend.js</code> and create a method <code>search_results</code> to test communication with Elastic Search. The method should go something like this:</p>
+
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="s2">&quot;search_results&quot;</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="c1">// Build up the search request</span>
+  <span class="kd">var</span> <span class="nx">request_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;fields&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;slug&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;tags&quot;</span><span class="p">,</span> <span class="s2">&quot;updated_at&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;query&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;wildcard&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;_all&quot;</span><span class="o">:</span> <span class="p">{</span>
+          <span class="s2">&quot;wildcard&quot;</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">q</span> <span class="o">+</span> <span class="s2">&quot;*&quot;</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;highlight&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;fields&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;title&quot;</span><span class="o">:</span> <span class="p">{},</span>
+        <span class="s2">&quot;tags&quot;</span><span class="o">:</span> <span class="p">{},</span>
+        <span class="s2">&quot;content&quot;</span><span class="o">:</span> <span class="p">{}</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;suggest&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;suggestions&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;text&quot;</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">q</span><span class="p">,</span>
+        <span class="s2">&quot;term&quot;</span><span class="o">:</span> <span class="p">{</span>
+          <span class="s2">&quot;field&quot;</span><span class="o">:</span> <span class="s2">&quot;_all&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;suggest_mode&quot;</span><span class="o">:</span> <span class="s2">&quot;always&quot;</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+
+  <span class="c1">// create the elastic search request</span>
+  <span class="nx">request_data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">request_data</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">esRequest</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">).</span><span class="nx">request</span><span class="p">({</span>
+    <span class="nx">host</span><span class="o">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/posts/_search&#39;</span><span class="p">,</span>
+    <span class="nx">port</span><span class="o">:</span> <span class="mi">9200</span><span class="p">,</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s2">&quot;POST&quot;</span><span class="p">,</span>
+    <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;Content-Length&#39;</span><span class="o">:</span> <span class="nx">request_data</span><span class="p">.</span><span class="nx">length</span>
+    <span class="p">}</span>
+  <span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">esRes</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+    <span class="nx">esRes</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">chunk</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">result</span> <span class="o">+=</span> <span class="nx">chunk</span><span class="p">;</span>
+    <span class="p">});</span>
+    <span class="nx">esRes</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;end&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+
+      <span class="c1">// render the results</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;results&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="nx">results</span><span class="o">:</span> <span class="nx">response</span><span class="p">,</span>
+        <span class="nx">resultsJSON</span><span class="o">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">response</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+        <span class="nx">query</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">q</span>
+      <span class="p">});</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+
+  <span class="c1">// search!</span>
+  <span class="nx">esRequest</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">request_data</span><span class="p">);</span>
+  <span class="nx">esRequest</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
+<span class="p">},</span></code></pre></div>
+
+<p>Here’s whats happening: we set up the page to work off a GET request to the URL <code>/search/?q=[search_string]</code>. As you can see, there’s a call to <code>results</code>. We’ll be creating this next.</p>
+
+<h3 id="create-the-test-page">Create the Test Page</h3>
+
+<p>Alright, we’re almost there. The simplest way to test out our search API would be to render the response from ElasticSearch on to an empty page.</p>
+
+<p>Create <code>results.hbs</code> in the folder <code>/content/themes/[your theme]/</code>. Here, <code>[your theme]</code> is your currently selected theme. Ghost comes with Casper as the default theme.</p>
+
+<p>We are going to keep the contents of results.hbs as simple as possible, all we need is to be able to test out the search response.</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html">{{!<span class="nt">&lt; default</span><span class="err">}}</span>
+<span class="err">&lt;</span><span class="na">h1</span><span class="nt">&gt;</span>{{query}}<span class="nt">&lt;/h1&gt;</span>  
+<span class="nt">&lt;pre&gt;&lt;code</span><span class="err">{{</span><span class="na">resultsJSON</span><span class="err">}}&lt;/</span><span class="na">code</span><span class="nt">&gt;&lt;/pre&gt;</span></code></pre></div>
+
+<p><small>the `` means that this partial inherits from default.hbs, so should will still look like a part of your site.</small></p>
+
+<p>Alright, we’re done! Restart your server and you should be good to go!</p>
+
+<h3 id="testing-it-all-out">Testing it all out!</h3>
+
+<p>Ok, we’re almost there. Testing it is easy: simply navigate to <code>[your site url]/search/?q=blog</code> and you should be greeted with the search results!</p>
+
+<p><img src="/assets/images/search_results_json_o.jpg" alt="Search Results JSON" /></p>
+
+<p>Go ahead, clean up your results page!</p>
+
+<p><img src="/assets/images/Screen_Shot_2014_04_22_at_12_55_02_am_o.jpg" alt="A simple search results page" /></p>
+
+<p><img src="/assets/images/Screen_Shot_2014_04_22_at_12_54_23_am_o.jpg" alt="When no search results are found" /></p>
+
+<h2 id="summary">Summary</h2>
+
+<p>We’ve finally managed to (in a somewhat hackish manner) integrate ElasticSearch into our Ghost blog!</p>
+
+<h2 id="next-steps">Next Steps</h2>
+
+<p>Now that the basic integration is done I can think of quite a few changes that can/should be made to clean up the code and enhance the search feature:</p>
+
+<ol>
+  <li>The bulk indexing of all posts should occur automatically whenever a post is created/modified/deleted.</li>
+  <li>The <code>/search</code> handler in the controller should return JSON results when an AJAX call is made instead of a non-AJAX call. This feature could be extended to build up an auto-suggester and/or an entirely AJAX powered search.</li>
+  <li>Refactor the code in the frontend controller!! I do not think the Ghost creators of the platform will be pleased at the way the code is currently written! <img src="http://shiny.co.in/wp-includes/images/smilies/icon_razz.gif" alt=":P" /></li>
+  <li><a href="http://www.opensearch.org/Home">Open Search</a> integration!</li>
+</ol>
+
+<hr />
+
+<p>Thoughts? Rants? Advice?</p>
+
+  </section>
+</article>
+
+<footer class="post-footer">
+  
+  <section class="author">
+    <h4></h4>
+    <p></p>
+  </section>
+  
+
+  <section class="comments">
+    <div id="disqus_thread"></div>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </section>
+</footer>
+      </div>
+
+    </div>
+    <!-- <script type="text/javascript" src="/assets/javascripts/common/md5.js"></script> -->
+    <!-- <script type="text/javascript" src="/assets/javascripts/common/init.js"></script> -->
+
+    <!-- <script type="text/javascript" src="/assets/javascripts/common/socialite.min.js"></script> -->
+
+    <script type="text/javascript" src="/assets/javascripts/common/common_all.js"></script>
+  </body>
+</html>

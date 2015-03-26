@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A layout example that shows off a blog page with a list of posts.">
+
+    <title>A Square Loader in Javascript</title>
+
+    <!-- <link rel="stylesheet" type="text/css" href="/assets/stylesheets/common/pure.css">
+    <link rel="stylesheet" type="text/css" href="/assets/stylesheets/common/grids-responsive.css">
+    <link rel="stylesheet" type="text/css" href="/assets/stylesheets/common/typography.css">
+    <link rel="stylesheet" type="text/css" href="/assets/stylesheets/common/syntax.css">
+    <link rel="stylesheet" type="text/css" href="/assets/stylesheets/common/blog.css">
+    <link rel="stylesheet" type="text/css" href="/assets/stylesheets/common/styles.css"> -->
+
+    <link rel="stylesheet" type="text/css" href="/assets/stylesheets/common/common_all.css">    
+  </head>
+
+  <body>
+    <div id="layout" class="pure-g">
+      <div class="sidebar pure-u-1 pure-u-md-1-4">
+        <div class="header">
+          <h1 class="brand-title">The Shiny Coin</h1>
+          <h2 class="brand-tagline">A blog about the modern web.</h2>
+
+          <nav class="nav">
+            <ul class="nav-list">
+              <li class="nav-item">
+                
+                  <a class="pure-button" href="/">&larr; Back Home</a>
+                
+              </li>
+              <!-- <li class="nav-item">
+                <a class="pure-button" href="http://yuilibrary.com">YUI Library</a>
+              </li> -->
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+      <div class="content  pure-u-1 pure-u-md-3-4">
+        <article class="post">
+  <header class="post-header">
+    <!-- <img class="post-avatar" alt="Biswarup Chakravarty&#x27;s avatar" height="48" width="48" data-email="biswarup.chakravarty@gmail.com"> -->
+    <h1 class="post-title"><a href="/a-square-loader-in-javascript" class="post-title-link">A Square Loader in Javascript</a></h1>
+    <p class="post-meta">
+      By <a href="" class="post-author">Biswarup Chakravarty</a> on <time datetime="">15 March 2015</time>
+      under 
+        <a class="post-tag post-tag-index-1" href="#">Javascript</a>
+      
+        <a class="post-tag post-tag-index-2" href="#">Canvas</a>
+      
+        <a class="post-tag post-tag-index-3" href="#">Animation</a>
+      
+   </p>
+   <div class="social-buttons-container">
+  <ul class="social-buttons cf">
+    <li>
+      <a href="http://twitter.com/share" class="socialite twitter-share" data-text="Socialite.js" data-url="/a-square-loader-in-javascript" rel="nofollow" target="_blank"><span class="vhidden"><!-- Share on Twitter --></span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=/a-square-loader-in-javascript" class="socialite googleplus-one" data-href="/a-square-loader-in-javascript" rel="nofollow" target="_blank"><span class="vhidden"><!-- Share on Google --></span></a>
+    </li>
+    <li>
+      <a href="http://www.facebook.com/sharer.php?u=http://www.socialitejs.com&amp;t=Socialite.js" class="socialite facebook-like" data-href="/a-square-loader-in-javascript" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" rel="nofollow" target="_blank"><span class="vhidden"><!-- Share on Facebook --></span></a>
+    </li>
+    <li></li>
+    <!-- <li>
+    <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=/a-square-loader-in-javascript&amp;title=Socialite.js" class="socialite linkedin-share" data-url="/a-square-loader-in-javascript" data-counter="top" rel="nofollow" target="_blank"><span class="vhidden">Share on LinkedIn</span></a>
+    </li>
+    <li>
+    <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=/a-square-loader-in-javascript&amp;title=Socialite.js" class="socialite linkedin-share" data-url="/a-square-loader-in-javascript" data-counter="top" rel="nofollow" target="_blank"><span class="vhidden">Share on LinkedIn</span></a>
+    </li> -->
+  </ul>
+</div>
+   <hr>
+ </header>
+ <section class="post-description">
+  <h1 id="a-square-loader-in-javascript">A Square Loader in Javascript</h1>
+
+<h2 id="introducing-boxyjs">Introducing <code>boxy.js</code>!</h2>
+
+<hr />
+
+<p>What do we want? – A square loader which isn’t a gif! A square loader in javascript!</p>
+
+<p>When do we want it? – NOW!</p>
+
+<p>Alright then, lets begin.</p>
+
+<p><small><em><strong>tl;dr</strong> If you just want the code so that you can finally make your commit and go home, jump to <a href="#the-source">the end</a>.</em></small></p>
+
+<h3 id="step-1">Step 1</h3>
+
+<p>Lets take a canvas and draw two lines on it, both fading from 100% opacity to 0% opacity and laid end-to-end. Make sure that the 0% opacity end of one touches the 100% opacity end of the other (head-to-toe, so to speak). Lets not attach this canvas to the DOM, this is going to remain in-memory. Lets call this line <code>L1</code>.</p>
+
+<p>Each of these lines is of length <code>4a</code>, where <code>a</code> is the length of the side of the square that you want your loader to measure.</p>
+
+<h3 id="step-2">Step 2</h3>
+
+<p>To begin with, assume an offset <code>offset</code> which is set to 0. Imagine cutting off a section of <code>L1</code>, of length <code>4a</code> units. When you’re cutting off a section, don’t cut it from the extreme left end; make sure to leave out the <code>offset</code>. i.e. if <code>offset</code> is 5px, you ignore the first 5px of <code>L1</code>.</p>
+
+<p>In the first run, you should have a line of length <code>4a</code>. Let’s call this one <code>L2</code>. Now, bend it at right angles along each quarter to form a square.</p>
+
+<h3 id="step-3">Step 3</h3>
+
+<p>Wait for a small amount of time (and assume that the line <code>L1</code> regenerated) and increment the <code>offset</code> by a small amount. Repeat Step #2 above. You’ll notice that this time the line that has been drawn is slightly different. It does not start at 100% opacity and it ends right after it hits 0% opacity.</p>
+
+<p>Once you’ve created a square out of this one, you’ll see what I’m talking about.</p>
+
+<h3 id="step-4">Step 4</h3>
+
+<p>Repeat this until <code>L2</code>‘s right edge touches the right edge of <code>L1</code>. At this point, restart by resetting your <code>offset</code> to 0.</p>
+
+<h3 id="step-5">Step 5</h3>
+
+<p>Here it is!</p>
+
+<div id="boxyContainer"></div>
+
+<script>// <![CDATA[
+(function(){"use strict";var e={height:32,width:32,strokeWidth:5,strokeStartColor:"#fff",strokeEndColor:"#000",animationDuration:"50"},t=function(e){return Math.PI/180*e},n=function(e){var t,n;e=e||{};for(t=1;t<arguments.length;t+=1){if(!!arguments[t]){for(n in arguments[t]){if(arguments[t].hasOwnProperty(n)){e[n]=arguments[t][n]}}}}return e},r=function(e,t){return function(){return e.apply(t,arguments)}},i=function(e){var t,n,r=2*(e.height+e.width),i,s;t=document.createElement("canvas");n=t.getContext("2d");t.height=parseInt(e.strokeWidth,10);t.width=2*r;i=n.createLinearGradient(0,0,r,0);i.addColorStop(1,e.strokeStartColor);i.addColorStop(0,e.strokeEndColor);s=n.createLinearGradient(r,0,2*r,0);s.addColorStop(1,e.strokeStartColor);s.addColorStop(0,e.strokeEndColor);n.beginPath();n.lineWidth=e.strokeWidth;n.moveTo(0,0);n.lineTo(r,0);n.strokeStyle=i;n.stroke();n.beginPath();n.moveTo(r,0);n.lineTo(2*r,0);n.strokeStyle=s;n.stroke();return t},s=function(e,n,r,i){var s=n.getContext("2d"),o=2*(i.height+i.width),u=parseInt(o*e,10);s.clearRect(0,0,n.width,n.height);s.save();s.translate(i.width,0);s.rotate(t(180));s.drawImage(r,u,0,o/4,i.strokeWidth,0,-i.strokeWidth/2,i.width,i.strokeWidth);s.restore();s.save();s.rotate(t(90));s.translate(-i.width,0);s.drawImage(r,u+o/4,0,o/4,i.strokeWidth,i.width,-i.strokeWidth/2,i.width,i.strokeWidth);s.restore();s.save();s.translate(-i.width,i.height);s.drawImage(r,u+o/2,0,o/4,i.strokeWidth,i.width,-i.strokeWidth/2,i.width,i.strokeWidth);s.restore();s.save();s.translate(i.width,0);s.rotate(t(270));s.drawImage(r,u+o*.75,0,o/4,i.strokeWidth,-i.width,0,i.width,i.strokeWidth);s.restore()},o=function(t){this.options=n({},e,t);this.canvas=document.createElement("canvas");this.context=this.canvas.getContext("2d");this.canvas.height=this.options.height;this.canvas.width=this.options.width+this.options.strokeWidth;this._canvas=i(this.options);this._context=this._canvas.getContext("2d");this.progress=0};o.enqueueFrame=function(e){(window.requestAnimationFrame||function(e){setTimeout(e,0)})(e)};o.prototype.animateFrame=function(){s(this.progress/this.options.animationDuration,this.canvas,this._canvas,this.options);if(this.isActive===true){o.enqueueFrame(r(this.animateFrame,this))}this.progress=(this.progress+1)%this.options.animationDuration};o.prototype.start=function(){this.isActive=true;this.animateFrame();return this};o.prototype.stop=function(){this.isActive=false;return this};o.prototype.restart=function(){this.stop();this.start();return this};o.prototype.isActive=false;window.Boxy=o})();var boxy=new Boxy({strokeStartColor:"#dd0017",strokeEndColor:"#ddd",animationDuration:75});document.getElementById("boxyContainer").appendChild(boxy.canvas);boxy.start()
+// ]]&gt;</script>
+
+<h2 id="the-source">The Source</h2>
+
+<hr />
+
+<p>Here’s boxy’s javascript source-code:</p>
+
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="cm">/**</span>
+<span class="cm">The MIT License (MIT)</span>
+
+<span class="cm">Copyright (c) 2014 Biswarup Chakravarty</span>
+
+<span class="cm">Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="cm">of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="cm">in the Software without restriction, including without limitation the rights</span>
+<span class="cm">to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="cm">copies of the Software, and to permit persons to whom the Software is</span>
+<span class="cm">furnished to do so, subject to the following conditions:</span>
+
+<span class="cm">The above copyright notice and this permission notice shall be included in</span>
+<span class="cm">all copies or substantial portions of the Software.</span>
+
+<span class="cm">THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="cm">IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="cm">FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="cm">AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="cm">LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="cm">OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN</span>
+<span class="cm">THE SOFTWARE.</span>
+<span class="cm">**/</span>
+
+<span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+    <span class="cm">/*jslint browser: true, devel: true, nomen: true, white: true */</span>
+
+  <span class="kd">var</span> <span class="nx">defaults</span> <span class="o">=</span> <span class="p">{</span>
+
+    <span class="c1">// height in pixels of the loader</span>
+    <span class="nx">height</span><span class="o">:</span> <span class="mi">32</span><span class="p">,</span>
+
+    <span class="c1">// height in pixels of the loader</span>
+    <span class="nx">width</span><span class="o">:</span> <span class="mi">32</span><span class="p">,</span>
+
+    <span class="c1">// width in pixels of the loader</span>
+    <span class="nx">strokeWidth</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span>
+
+    <span class="c1">// Color 1. This fades to Color 2</span>
+    <span class="nx">strokeStartColor</span><span class="o">:</span> <span class="s1">&#39;#fff&#39;</span><span class="p">,</span>
+
+    <span class="c1">// Color 2</span>
+    <span class="nx">strokeEndColor</span><span class="o">:</span> <span class="s1">&#39;#000&#39;</span><span class="p">,</span>
+
+    <span class="c1">// mystery argument!</span>
+    <span class="nx">animationDuration</span><span class="o">:</span> <span class="s1">&#39;50&#39;</span>
+
+  <span class="p">},</span> <span class="nx">degrees</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">degree</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">/</span> <span class="mi">180</span><span class="p">)</span> <span class="o">*</span> <span class="nx">degree</span><span class="p">;</span>
+  <span class="p">},</span> <span class="nx">extend</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">out</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">key</span><span class="p">;</span>
+    <span class="nx">out</span> <span class="o">=</span> <span class="nx">out</span> <span class="o">||</span> <span class="p">{};</span>
+    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&amp;</span><span class="nx">amp</span><span class="p">;</span><span class="nx">lt</span><span class="p">;</span> <span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="o">!</span><span class="nx">arguments</span><span class="p">[</span><span class="nx">i</span><span class="p">]))</span> <span class="p">{</span> 
+        <span class="k">for</span> <span class="p">(</span><span class="nx">key</span> <span class="k">in</span> <span class="nx">arguments</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="p">{</span>
+          <span class="k">if</span> <span class="p">(</span><span class="nx">arguments</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nx">out</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">arguments</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">key</span><span class="p">];</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">out</span><span class="p">;</span>
+  <span class="p">},</span> <span class="nx">bind</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">func</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kd">function</span> <span class="nx">boundFunction</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">func</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+    <span class="p">};</span>
+  <span class="p">},</span> <span class="nx">createInMemoryCanvas</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">_canvas</span><span class="p">,</span> <span class="nx">_context</span><span class="p">,</span>
+      <span class="nx">lineLength</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">height</span> <span class="o">+</span> <span class="nx">options</span><span class="p">.</span><span class="nx">width</span><span class="p">),</span>
+      <span class="nx">gradient1</span><span class="p">,</span> <span class="nx">gradient2</span><span class="p">;</span>
+
+    <span class="nx">_canvas</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;canvas&#39;</span><span class="p">);</span>
+    <span class="nx">_context</span> <span class="o">=</span> <span class="nx">_canvas</span><span class="p">.</span><span class="nx">getContext</span><span class="p">(</span><span class="s1">&#39;2d&#39;</span><span class="p">);</span>
+    <span class="nx">_canvas</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">strokeWidth</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+    <span class="nx">_canvas</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="nx">lineLength</span><span class="p">;</span>
+
+    <span class="nx">gradient1</span> <span class="o">=</span> <span class="nx">_context</span><span class="p">.</span><span class="nx">createLinearGradient</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">lineLength</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="nx">gradient1</span><span class="p">.</span><span class="nx">addColorStop</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">options</span><span class="p">.</span><span class="nx">strokeStartColor</span><span class="p">);</span>
+    <span class="nx">gradient1</span><span class="p">.</span><span class="nx">addColorStop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">options</span><span class="p">.</span><span class="nx">strokeEndColor</span><span class="p">);</span>
+    <span class="nx">gradient2</span> <span class="o">=</span> <span class="nx">_context</span><span class="p">.</span><span class="nx">createLinearGradient</span><span class="p">(</span><span class="nx">lineLength</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="nx">lineLength</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="nx">gradient2</span><span class="p">.</span><span class="nx">addColorStop</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">options</span><span class="p">.</span><span class="nx">strokeStartColor</span><span class="p">);</span>
+    <span class="nx">gradient2</span><span class="p">.</span><span class="nx">addColorStop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">options</span><span class="p">.</span><span class="nx">strokeEndColor</span><span class="p">);</span>
+
+    <span class="nx">_context</span><span class="p">.</span><span class="nx">beginPath</span><span class="p">();</span>
+    <span class="nx">_context</span><span class="p">.</span><span class="nx">lineWidth</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">strokeWidth</span><span class="p">;</span>
+    <span class="nx">_context</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="nx">_context</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">lineLength</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="nx">_context</span><span class="p">.</span><span class="nx">strokeStyle</span> <span class="o">=</span> <span class="nx">gradient1</span><span class="p">;</span>
+    <span class="nx">_context</span><span class="p">.</span><span class="nx">stroke</span><span class="p">();</span>
+
+    <span class="nx">_context</span><span class="p">.</span><span class="nx">beginPath</span><span class="p">();</span>
+    <span class="nx">_context</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">lineLength</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="nx">_context</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nx">lineLength</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="nx">_context</span><span class="p">.</span><span class="nx">strokeStyle</span> <span class="o">=</span> <span class="nx">gradient2</span><span class="p">;</span>
+    <span class="nx">_context</span><span class="p">.</span><span class="nx">stroke</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="nx">_canvas</span><span class="p">;</span>
+  <span class="p">},</span> <span class="nx">drawBox</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">progress</span><span class="p">,</span> <span class="nx">canvas</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">context</span> <span class="o">=</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">getContext</span><span class="p">(</span><span class="s1">&#39;2d&#39;</span><span class="p">),</span>
+      <span class="nx">lineLength</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">height</span> <span class="o">+</span> <span class="nx">options</span><span class="p">.</span><span class="nx">width</span><span class="p">),</span>
+      <span class="nx">lineProgress</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">lineLength</span> <span class="o">*</span> <span class="nx">progress</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+
+    <span class="nx">context</span><span class="p">.</span><span class="nx">clearRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+
+    <span class="nx">context</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+    <span class="nx">context</span><span class="p">.</span><span class="nx">translate</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="nx">context</span><span class="p">.</span><span class="nx">rotate</span><span class="p">(</span><span class="nx">degrees</span><span class="p">(</span><span class="mi">180</span><span class="p">));</span>
+    <span class="nx">context</span><span class="p">.</span><span class="nx">drawImage</span><span class="p">(</span><span class="nx">buffer</span><span class="p">,</span> <span class="nx">lineProgress</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">lineLength</span> <span class="o">/</span> <span class="mi">4</span><span class="p">,</span> <span class="nx">options</span><span class="p">.</span><span class="nx">strokeWidth</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="nx">options</span><span class="p">.</span><span class="nx">strokeWidth</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">options</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">options</span><span class="p">.</span><span class="nx">strokeWidth</span><span class="p">);</span>
+    <span class="nx">context</span><span class="p">.</span><span class="nx">restore</span><span class="p">();</span>
+
+    <span class="nx">context</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+    <span class="nx">context</span><span class="p">.</span><span class="nx">rotate</span><span class="p">(</span><span class="nx">degrees</span><span class="p">(</span><span class="mi">90</span><span class="p">));</span>
+    <span class="nx">context</span><span class="p">.</span><span class="nx">translate</span><span class="p">(</span><span class="o">-</span><span class="nx">options</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="nx">context</span><span class="p">.</span><span class="nx">drawImage</span><span class="p">(</span><span class="nx">buffer</span><span class="p">,</span> <span class="nx">lineProgress</span> <span class="o">+</span> <span class="p">(</span><span class="nx">lineLength</span> <span class="o">/</span> <span class="mi">4</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">lineLength</span> <span class="o">/</span> <span class="mi">4</span><span class="p">,</span> <span class="nx">options</span><span class="p">.</span><span class="nx">strokeWidth</span><span class="p">,</span> <span class="nx">options</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="o">-</span><span class="nx">options</span><span class="p">.</span><span class="nx">strokeWidth</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">options</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">options</span><span class="p">.</span><span class="nx">strokeWidth</span><span class="p">);</span>
+    <span class="nx">context</span><span class="p">.</span><span class="nx">restore</span><span class="p">();</span>
+
+    <span class="nx">context</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+    <span class="nx">context</span><span class="p">.</span><span class="nx">translate</span><span class="p">(</span><span class="o">-</span><span class="nx">options</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">options</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+    <span class="nx">context</span><span class="p">.</span><span class="nx">drawImage</span><span class="p">(</span><span class="nx">buffer</span><span class="p">,</span> <span class="nx">lineProgress</span> <span class="o">+</span> <span class="p">(</span><span class="nx">lineLength</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">lineLength</span> <span class="o">/</span> <span class="mi">4</span><span class="p">,</span> <span class="nx">options</span><span class="p">.</span><span class="nx">strokeWidth</span><span class="p">,</span> <span class="nx">options</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="o">-</span><span class="nx">options</span><span class="p">.</span><span class="nx">strokeWidth</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">options</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">options</span><span class="p">.</span><span class="nx">strokeWidth</span><span class="p">);</span>
+    <span class="nx">context</span><span class="p">.</span><span class="nx">restore</span><span class="p">();</span>
+
+    <span class="nx">context</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+    <span class="nx">context</span><span class="p">.</span><span class="nx">translate</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="nx">context</span><span class="p">.</span><span class="nx">rotate</span><span class="p">(</span><span class="nx">degrees</span><span class="p">(</span><span class="mi">270</span><span class="p">));</span>
+    <span class="nx">context</span><span class="p">.</span><span class="nx">drawImage</span><span class="p">(</span><span class="nx">buffer</span><span class="p">,</span> <span class="nx">lineProgress</span> <span class="o">+</span> <span class="p">(</span><span class="nx">lineLength</span> <span class="o">*</span> <span class="mf">0.75</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">lineLength</span> <span class="o">/</span> <span class="mi">4</span><span class="p">,</span> <span class="nx">options</span><span class="p">.</span><span class="nx">strokeWidth</span><span class="p">,</span> <span class="o">-</span><span class="nx">options</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">options</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">options</span><span class="p">.</span><span class="nx">strokeWidth</span><span class="p">);</span>
+    <span class="nx">context</span><span class="p">.</span><span class="nx">restore</span><span class="p">();</span>
+  <span class="p">},</span> <span class="nx">Boxy</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">options</span> <span class="o">=</span> <span class="nx">extend</span><span class="p">({},</span> <span class="nx">defaults</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">canvas</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;canvas&#39;</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">context</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">getContext</span><span class="p">(</span><span class="s1">&#39;2d&#39;</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">height</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">width</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">strokeWidth</span><span class="p">;</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">_canvas</span> <span class="o">=</span> <span class="nx">createInMemoryCanvas</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">_context</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_canvas</span><span class="p">.</span><span class="nx">getContext</span><span class="p">(</span><span class="s1">&#39;2d&#39;</span><span class="p">);</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">progress</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">};</span>
+
+  <span class="nx">Boxy</span><span class="p">.</span><span class="nx">enqueueFrame</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">delegate</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">requestAnimationFrame</span> <span class="o">||</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">f</span><span class="p">)</span> <span class="p">{</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> <span class="p">})(</span><span class="nx">delegate</span><span class="p">);</span>
+  <span class="p">};</span>
+
+  <span class="nx">Boxy</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">animateFrame</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">drawBox</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">progress</span> <span class="o">/</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">animationDuration</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_canvas</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">isActive</span> <span class="o">===</span> <span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">Boxy</span><span class="p">.</span><span class="nx">enqueueFrame</span><span class="p">(</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">animateFrame</span><span class="p">,</span> <span class="k">this</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">progress</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">progress</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">animationDuration</span><span class="p">;</span>
+  <span class="p">};</span>
+
+  <span class="nx">Boxy</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">start</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">isActive</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">animateFrame</span><span class="p">();</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+  <span class="p">};</span>
+
+  <span class="nx">Boxy</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">stop</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">isActive</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+  <span class="p">};</span>
+
+  <span class="nx">Boxy</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">restart</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">stop</span><span class="p">();</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+  <span class="p">};</span>
+
+  <span class="nx">Boxy</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">isActive</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+  <span class="nb">window</span><span class="p">.</span><span class="nx">Boxy</span> <span class="o">=</span> <span class="nx">Boxy</span><span class="p">;</span>
+
+<span class="p">}());</span></code></pre></div>
+
+<p>And here’s a small snippet showing you how to use it:</p>
+
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">boxy</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Boxy</span><span class="p">({</span>
+    <span class="nx">strokeStartColor</span><span class="o">:</span> <span class="s1">&#39;#dd0017&#39;</span><span class="p">,</span>
+    <span class="nx">strokeEndColor</span><span class="o">:</span> <span class="s1">&#39;#ddd&#39;</span><span class="p">,</span>
+    <span class="nx">animationDuration</span><span class="o">:</span> <span class="mi">75</span>
+<span class="p">});</span>
+<span class="nb">document</span>
+  <span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;boxyContainer&#39;</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">boxy</span><span class="p">.</span><span class="nx">canvas</span><span class="p">);</span>
+<span class="nx">boxy</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span></code></pre></div>
+
+<h4 id="why-boxy">Why boxy?</h4>
+
+<ul>
+  <li>No CSS dependencies.</li>
+  <li>Purely javascript based.</li>
+  <li>No JS dependencies (yup, jQuery isn’t required either!)</li>
+  <li>Uses <code>window.requestAnimationFrame</code> where available, falls back to <code>setTimeout(func, 0)</code> otherwise.</li>
+  <li>Boxy won’t hang the UI thread, but if you decide to hang it yourself for some reason, boxy will <em>not</em> animate. In this case you’re better off with a normal CSS3 transform based loader. (Why are you hanging the thread anyways?)</li>
+  <li>Yes, I much prefer this to gifs.</li>
+</ul>
+
+<p><strong>That’s all folks</strong></p>
+
+  </section>
+</article>
+
+<footer class="post-footer">
+  
+  <section class="author">
+    <h4></h4>
+    <p></p>
+  </section>
+  
+
+  <section class="comments">
+    <div id="disqus_thread"></div>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </section>
+</footer>
+      </div>
+
+    </div>
+    <!-- <script type="text/javascript" src="/assets/javascripts/common/md5.js"></script> -->
+    <!-- <script type="text/javascript" src="/assets/javascripts/common/init.js"></script> -->
+
+    <!-- <script type="text/javascript" src="/assets/javascripts/common/socialite.min.js"></script> -->
+
+    <script type="text/javascript" src="/assets/javascripts/common/common_all.js"></script>
+  </body>
+</html>
