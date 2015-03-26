@@ -1,0 +1,35 @@
+---
+layout: skeleton
+---
+
+<article class="post">
+  <header class="post-header">
+    <!-- <img class="post-avatar" alt="{{ page.author.name }}&#x27;s avatar" height="48" width="48" data-email="{{page.author.email}}"> -->
+    <h1 class="post-title"><a href="{{ page.url }}" class="post-title-link">{{ page.title }}</a></h1>
+    <p class="post-meta">
+      By <a href="{{author.website}}" class="post-author">{{ page.author.name }}</a> on <time datetime="{{date format='YYYY-mm-DD'}}">{{ page.date | date_to_long_string }}</time>
+      under {% for tag in page.tags %}
+        <a class="post-tag post-tag-index-{{ forloop.index }}" href="#">{{ tag }}</a>
+      {% endfor %}
+   </p>
+   {% include post_social_share_header.html %}
+   <hr>
+ </header>
+ <section class="post-description">
+  {{content}}
+  </section>
+</article>
+
+<footer class="post-footer">
+  {{#if author}}
+  <section class="author">
+    <h4>{{author}}</h4>
+    <p>{{author.bio}}</p>
+  </section>
+  {{/if}}
+
+  <section class="comments">
+    <div id="disqus_thread"></div>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </section>
+</footer>
