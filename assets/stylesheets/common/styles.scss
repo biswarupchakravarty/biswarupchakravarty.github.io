@@ -10,12 +10,39 @@
   background-color: unquote("rgba(#{$red}, #{$green}, #{$blue}, #{$alpha})");
 }
 
-code > span {
-  font-family: Inconsolata, monospace, monospace !important;
+.highlight {
+  width: 98%;
+  margin: auto;
+  pre {
+    code {
+      border: none;
+      padding: 0;
+      color: inherit;
+      background: transparent;
+    }
+  }
 }
 
 * {
-  font-family: "Lato", "Helvetica Neue", Helvetica, Verdana !important;
+  font-family: "Helvetica Neue", Helvetica, Verdana !important;
+  // font-family: "Lato";
+}
+
+code {
+  font-family: "Inconsolata", monospace, monospace !important;
+  line-height: initial;
+  span {
+    font-family: "Inconsolata", monospace, monospace !important;
+  }
+  color: #d14;
+  background: #fafafa;
+  padding: 3px;
+  border: 1px solid #eee;
+  > span {
+    background: transparent;
+    padding: 0;
+    border: none;
+  }
 }
 
 .navbar-phantom {

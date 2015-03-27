@@ -1,6 +1,6 @@
 (function () {
 
-  var isDevelopment = window.location.toString().indexOf('localhost1') > -1,
+  var isDevelopment = window.location.toString().indexOf('localhost') > -1,
     disqus_shortname = 'shinycoin';
 
   (function () {

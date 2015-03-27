@@ -13,7 +13,10 @@
     <link rel="stylesheet" type="text/css" href="/assets/stylesheets/common/blog.css">
     <link rel="stylesheet" type="text/css" href="/assets/stylesheets/common/styles.css">
     {% endcomment %}
-    <link rel="stylesheet" type="text/css" href="{{site.url}}/assets/stylesheets/common/common_all.css">    
+    <link rel="stylesheet" type="text/css" href="{{site.url}}/assets/stylesheets/common/common_all.css">
+    {% if page.stylesheet %}
+    <link rel="stylesheet" type="text/css" href="{{site.url}}/assets/stylesheets/posts/{{page.stylesheet}}.css">
+    {% endif %}
   </head>
 
   <body>
@@ -42,6 +45,9 @@
     {% comment %} <script type="text/javascript" src="/assets/javascripts/common/md5.js"></script> {% endcomment %}
     {% comment %} <script type="text/javascript" src="/assets/javascripts/common/init.js"></script> {% endcomment %}
     {% comment %} <script type="text/javascript" src="/assets/javascripts/common/socialite.min.js"></script> {% endcomment %}
-    <script type="text/javascript" src="/assets/javascripts/common/common_all.js"></script>
+    <script type="text/javascript" src="{{site.url}}/assets/javascripts/common/common_all.js" async defer></script>
+    {% if page.javascript %}
+    <script type="text/javascript" src="{{site.url}}/assets/javascripts/posts/{{page.javascript}}.js" async defer></script>
+    {% endif %}
   </body>
 </html>
