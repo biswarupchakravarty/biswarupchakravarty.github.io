@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "A Visualization of Sorting Algorithms"
-excerpt: "A real time visualization of how different sorting algorithms work &mdash; no GIFs or videos, it's all done is javascript. Created using the HTML5 Canvas, CustomEvents and by messing with the Array's prototype. There's also a bit of AudioContext thrown in for some extra jazz."
+excerpt: "A real time visualization of how different sorting algorithms work &mdash; no GIFs/videos/java applets/flash, it's all done is javascript. Created using the HTML5 Canvas, CustomEvents and by messing with the Array's prototype. There's also a bit of AudioContext thrown in for some extra jazz."
 tags:
   - Sorting Algorithms
   - Canvas
