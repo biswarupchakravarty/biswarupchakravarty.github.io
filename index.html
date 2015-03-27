@@ -6,7 +6,6 @@ content_class: list
 <div class="posts">
   <h1 class="content-subhead">Recent Posts</h1>
 
-  <!-- A single blog post -->
   {% for post in site.posts %}
 
   {% if post.author.name != 'Biswarup Chakravarty' %}
@@ -15,28 +14,21 @@ content_class: list
   {% if post.tags.size > 0 %}
     {% assign has_tags = true %}
   {% endif %}
-
   <section class="post">
     <header class="post-header">
-
-    <h2 class="post-title">
-      <a href="{{ post.url }}" class="post-title-link">{{ post.title }}</a>
-      <!-- <img class="post-avatar" alt="{{ post.author.name }}&#x27;s avatar" height="48" width="48" data-email="{{ post.author.email }}"> -->
-      <div style="clear:both"></div>
-    </h2>
+      <h2 class="post-title">
+        <a href="{{ post.url }}" class="post-title-link">{{ post.title }}</a>{% comment %}
+        <img class="post-avatar" alt="{{ post.author.name }}&#x27;s avatar" height="48" width="48" data-email="{{ post.author.email }}">{% endcomment %}
+        <div style="clear:both"></div>
+      </h2>
 
       <p class="post-meta">
         {% if is_guest_author %}
         By <a href="javascript:void(0)" class="post-author">{{ post.author.name }}</a> 
-        {% endif %}
-        {% if has_tags and is_guest_author %}
+        {% endif %}{% if has_tags and is_guest_author %}
           under
-        {% endif %}
-        {% if has_tags %}
-          {% for tag in post.tags %}
-          <a class="post-tag post-tag-index-{{ forloop.index }}" href="#">{{ tag }}</a>
-          {% endfor %}
-        {% endif %}
+        {% endif %}{% if has_tags %}{% for tag in post.tags %}
+          <a class="post-tag post-tag-index-{{ forloop.index }}" href="#">{{ tag }}</a>{% endfor %}{% endif %}
       </p>
     </header>
 
@@ -48,5 +40,4 @@ content_class: list
     </div>
   </section>
   {% endfor %}
-
 </div>

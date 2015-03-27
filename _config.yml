@@ -5,6 +5,11 @@ defaults:
   -
     scope:
       path: ""
+    values:
+      title: "The Shiny Coin - A Blog About the Modern Web"
+  -
+    scope:
+      path: ""
       type: "posts"
     values:
       layout: "post"
